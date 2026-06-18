@@ -909,8 +909,14 @@ function importDatabase(event) {
         categories = data.categories;
         items = data.items;
         
-        saveCategoriesToStorage();
-        saveItemsToStorage();
+        localStorage.setItem('fc_categories_db', JSON.stringify(categories));
+        localStorage.setItem('fc_items_db', JSON.stringify(items));
+        
+        if (isFirebaseEnabled) {
+          db.ref('grocery_list').set({ categories, items });
+        } else {
+          renderApp();
+        }
         switchTab('catalog');
         alert('Dados importados com sucesso!');
       } else {
