@@ -906,6 +906,38 @@ body {
   animation: slideInUp 0.35s ease forwards;
 }
 
+/* Item Specific Notes on List Row */
+.cart-row-note-container {
+  margin-top: 6px;
+  width: 100%;
+}
+
+.cart-row-note-input {
+  width: 100%;
+  border: 1px solid transparent;
+  background: #FFF9E6; /* warm yellow */
+  color: #D97706; /* amber text */
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+.cart-row-note-input:focus {
+  border-color: #FDE68A;
+  background: #FFFFFF;
+}
+
+.cart-row-note-input::placeholder {
+  color: #D97706;
+  opacity: 0.6;
+}
+
+
 
 
 

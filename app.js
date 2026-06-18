@@ -204,6 +204,7 @@ function setupEventListeners() {
       items.forEach(item => {
         item.inList = false;
         item.checked = false;
+        item.listNote = '';
       });
       saveItemsToStorage();
       renderApp();
@@ -218,6 +219,7 @@ function setupEventListeners() {
         items.forEach(item => {
           item.inList = false;
           item.checked = false;
+          item.listNote = '';
         });
         saveItemsToStorage();
         renderApp();
@@ -237,6 +239,7 @@ function setupEventListeners() {
             if (item.inList && item.checked) {
               item.inList = false;
               item.checked = false;
+              item.listNote = '';
             }
           });
           saveItemsToStorage();
@@ -469,6 +472,10 @@ function renderItems() {
               <div class="cart-row-details" onclick="openDetailsModal('${item.id}')">
                 <h4 class="cart-row-title">${item.name}</h4>
                 <p class="cart-row-subtitle">${item.category} • ${item.unit}</p>
+                ${item.description ? `<span class="cart-row-note" style="margin-bottom: 6px;">📝 ${item.description}</span>` : ''}
+                <div class="cart-row-note-container" onclick="event.stopPropagation()">
+                  <input type="text" class="cart-row-note-input" placeholder="+ Adicionar nota para esta compra..." value="${item.listNote || ''}" onchange="updateListNote('${item.id}', this.value)">
+                </div>
               </div>
               <div class="quantity-pill">
                 <button class="qty-circle" onclick="adjustItemQty('${item.id}', -1, event)">-</button>
@@ -519,6 +526,10 @@ function renderItems() {
             <div class="cart-row-details" onclick="openDetailsModal('${item.id}')">
               <h4 class="cart-row-title">${item.name}</h4>
               <p class="cart-row-subtitle">${item.category} • ${item.unit}</p>
+              ${item.description ? `<span class="cart-row-note" style="margin-bottom: 6px;">📝 ${item.description}</span>` : ''}
+              <div class="cart-row-note-container" onclick="event.stopPropagation()">
+                <input type="text" class="cart-row-note-input" placeholder="+ Adicionar nota para esta compra..." value="${item.listNote || ''}" onchange="updateListNote('${item.id}', this.value)">
+              </div>
             </div>
             <div class="quantity-pill">
               <button class="qty-circle" onclick="adjustItemQty('${item.id}', -1, event)">-</button>
@@ -979,6 +990,15 @@ function showCustomConfirm(title, message, onConfirm) {
   openModal('modal-confirm');
 }
 window.showCustomConfirm = showCustomConfirm;
+
+function updateListNote(id, value) {
+  const item = items.find(i => i.id === id);
+  if (item) {
+    item.listNote = value;
+    saveItemsToStorage();
+  }
+}
+window.updateListNote = updateListNote;
 
 
 
