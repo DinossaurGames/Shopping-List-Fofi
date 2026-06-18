@@ -13,19 +13,19 @@ let customConfirmCallback = null;
 
 // Firebase Configuration (Paste your config here to enable cloud sync!)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAlCD6o0beolTSLdnrXSviVTRbYQhd84_w",
+  authDomain: "shopping-list-fofi.firebaseapp.com",
+  databaseURL: "https://shopping-list-fofi-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "shopping-list-fofi",
+  storageBucket: "shopping-list-fofi.firebasestorage.app",
+  messagingSenderId: "482804060067",
+  appId: "1:482804060067:web:7f6f40293476c765021416"
 };
 
 let isFirebaseEnabled = false;
 let db = null;
 
-if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "COLA_AQUI_A_TUA_API_KEY") {
   try {
     firebase.initializeApp(firebaseConfig);
     db = firebase.database();
