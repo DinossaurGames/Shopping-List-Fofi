@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshCart - A Minha App de Supermercado</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Top Dribbble-style Header -->
+    <header class="app-header theme-catalog" id="app-header">
+      <div class="header-top">
+        <div class="user-profile">
+          <div class="avatar" id="avatar-icon">FC</div>
+          <div class="welcome-text">
+            <h1 id="header-main-title">Lista de Compras</h1>
+            <p id="header-sub-title" style="display: none;"></p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <!-- Hidden utility file input -->
+          <input type="file" id="file-import" accept=".json" style="display: none;">
+        </div>
+      </div>
+
+      <!-- Interactive profile card acting as Settings Menu -->
+      <div class="store-profile-card" id="btn-settings-trigger" style="cursor: pointer;" title="Definições e Opções">
+        <div class="store-info">
+          <div class="store-logo" id="store-logo-text">🗂️</div>
+          <div class="store-details">
+            <h3 id="store-profile-title">Ingredientes & Catálogo</h3>
+            <p id="store-profile-desc">Clique para opções da base de dados</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <svg style="color: var(--color-purple-header); width: 22px; height: 22px;" id="settings-gear-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Search Section -->
+    <div class="search-filter-section">
+      <div class="search-bar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="search-input" placeholder="Pesquisar alimento...">
+      </div>
+    </div>
+
+    <!-- View tab switcher pill selector -->
+    <div class="tab-navigation">
+      <button class="tab-btn active" id="tab-catalog">
+        🗂️ Catálogo
+      </button>
+      <button class="tab-btn" id="tab-buy">
+        📋 A Comprar
+      </button>
+    </div>
+
+    <!-- Category Section -->
+    <section class="categories-section">
+      <div class="section-header">
+        <h2>Categorias</h2>
+        <span class="action-link" id="btn-manage-categories" style="cursor: pointer;" onclick="openCategoriesModal()">Gerir</span>
+      </div>
+      <div class="categories-container" id="categories-list">
+        <!-- Rendered dynamically as rounded circles -->
+      </div>
+    </section>
+
+    <!-- Items Section -->
+    <section class="items-section">
+      <div id="items-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Bottom Sticky Bar -->
+    <div class="bottom-sticky-bar">
+      <!-- Clean, neat main action button -->
+      <button class="checkout-btn" id="btn-main-action">
+        Carrinho Vazio
+      </button>
+      
+      <!-- Quick item adder button -->
+      <div class="secondary-actions-bar">
+        <button class="checkout-btn" id="btn-add-item" style="background: #F1F5F9; color: var(--color-text-main); font-size: 0.95rem; padding: 12px; box-shadow: none;">
+          + Criar Novo Alimento
+        </button>
+      </div>
+    </div>
+
+  </div> <!-- /app-container -->
+
+
+  <!-- MODAL: APP SETTINGS (Hidden area for database/actions) -->
+  <div class="modal-backdrop" id="modal-settings">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3>Opções & Definições</h3>
+        <button class="modal-close" onclick="closeModal('modal-settings')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 8px;">
+          Faça a gestão da base de dados local, exporte para backup ou importe a sua lista editada no PC.
+        </p>
+
+        <!-- Option Rows -->
+        <button class="btn-secondary" id="btn-modal-export" style="display: flex; align-items: center; gap: 12px; padding: 14px 20px; text-align: left; font-size: 0.95rem; width: 100%;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-purple-header);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <div>
+            <strong>Exportar JSON</strong>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; margin-top: 2px;">Descarregar dados para editar no PC</div>
+          </div>
+        </button>
+
+        <button class="btn-secondary" id="btn-modal-import" style="display: flex; align-items: center; gap: 12px; padding: 14px 20px; text-align: left; font-size: 0.95rem; width: 100%;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-purple-header);"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path><polyline points="16 16 12 12 8 16"></polyline></svg>
+          <div>
+            <strong>Importar JSON</strong>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; margin-top: 2px;">Carregar ficheiro JSON do PC</div>
+          </div>
+        </button>
+
+        <button class="btn-secondary" id="btn-modal-categories" style="display: flex; align-items: center; gap: 12px; padding: 14px 20px; text-align: left; font-size: 0.95rem; width: 100%;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-purple-header);"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+          <div>
+            <strong>Gerir Categorias</strong>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; margin-top: 2px;">Criar, ordenar ou remover categorias</div>
+          </div>
+        </button>
+
+        <button class="btn-secondary" id="btn-modal-clear-cart" style="display: flex; align-items: center; gap: 12px; padding: 14px 20px; text-align: left; font-size: 0.95rem; width: 100%; border-color: #FCA5A5;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-danger);"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          <div>
+            <strong style="color: var(--color-danger);">Limpar Todo o Carrinho</strong>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; margin-top: 2px;">Esvaziar a lista atual (mantém o catálogo)</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL: PRODUCT DETAILS (Screen 2) -->
+  <div class="modal-backdrop" id="modal-details">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3>Detalhes do Produto</h3>
+        <button class="modal-close" onclick="closeModal('modal-details')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      
+      <div class="details-header-card">
+        <img class="details-product-img" id="details-img" src="" alt="Produto">
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <h2 class="details-title" id="details-title">Nome do Alimento</h2>
+          <p class="details-subtitle" id="details-subtitle">Categoria • 500 gm</p>
+        </div>
+        <button class="icon-btn" id="details-edit-trigger" title="Editar alimento" onclick="editCurrentDetailItem()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        </button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <span style="background: #FFF9E6; color: #D97706; padding: 4px 10px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 700;">★ 4.8 Rating</span>
+        <span style="font-size: 0.8rem; color: var(--color-text-muted);">Disponível no catálogo</span>
+      </div>
+
+      <p class="details-description" id="details-description">
+        Este ingrediente está guardado no seu catálogo pessoal.
+      </p>
+
+      <div class="details-bottom-bar">
+        <div class="quantity-pill" style="padding: 8px 16px;">
+          <button class="qty-circle" id="details-qty-minus" style="font-size: 1.2rem;">-</button>
+          <span style="font-weight: 800; font-size: 1.1rem;" id="details-qty-val">1</span>
+          <button class="qty-circle" id="details-qty-plus" style="font-size: 1.2rem;">+</button>
+        </div>
+
+        <button class="checkout-btn" id="details-add-btn" style="flex-grow: 1; padding: 14px;">
+          Adicionar ao Carrinho
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL: ADD / EDIT ITEM DATABASE FORM -->
+  <div class="modal-backdrop" id="modal-item">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 id="modal-item-title">Criar Alimento</h3>
+        <button class="modal-close" onclick="closeModal('modal-item')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <form id="form-item" onsubmit="saveItem(event)">
+        <input type="hidden" id="item-id">
+        
+        <div class="form-group">
+          <label for="item-name">Nome do Alimento</label>
+          <input type="text" id="item-name" placeholder="Ex: Beterraba, Abacate..." required>
+        </div>
+
+        <div class="form-group">
+          <label for="item-category-select">Categoria</label>
+          <select id="item-category-select" required>
+            <!-- Rendered dynamically -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="item-quantity">Quantidade</label>
+          <input type="number" id="item-quantity" value="1" min="1" step="any" required>
+        </div>
+
+        <div class="form-group">
+          <label for="item-unit-select">Unidade / Medida</label>
+          <select id="item-unit-select">
+            <option value="un">un (Unidades)</option>
+            <option value="500 gm">500 gm</option>
+            <option value="1 kg">1 kg</option>
+            <option value="kg">kg (Quilograma)</option>
+            <option value="g">g (Grama)</option>
+            <option value="L">L (Litro)</option>
+            <option value="ml">ml (Mililitro)</option>
+            <option value="pacote">pacote</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="item-description">Descrição / Notas</label>
+          <textarea id="item-description" rows="2" placeholder="Ex: Comprar apenas se for biológica, marca X..." style="width: 100%; padding: 12px 16px; border-radius: var(--radius-md); border: 1.5px solid var(--color-border); outline: none; font-family: var(--font-main); font-size: 0.95rem; resize: none; background: #F8F9FA; box-sizing: border-box;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="item-image-url">Link da Foto (URL)</label>
+          <input type="url" id="item-image-url" placeholder="https://exemplo.com/foto.png" oninput="previewItemImage(this.value)">
+          <div class="image-preview-box">
+            <img id="image-preview" src="" alt="Antevisão" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80'">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-danger" id="btn-delete-item" style="display: none;" onclick="deleteCurrentItem()">Excluir Definitivamente</button>
+          <button type="submit" class="checkout-btn" style="padding: 12px;">Gravar Alimento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: QUICK QUANTITY PROMPT (Dribbble themed popup) -->
+  <div class="modal-backdrop" id="modal-qty-prompt">
+    <div class="modal-sheet" style="max-width: 380px; text-align: center; margin: auto;">
+      <div class="modal-header" style="margin-bottom: 16px;">
+        <h3>Escolha a Quantidade</h3>
+        <button class="modal-close" onclick="closeModal('modal-qty-prompt')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <p style="font-size: 1.05rem; font-weight: 700; color: var(--color-text-main); margin-bottom: 20px;" id="qty-prompt-item-name">Nome do Alimento</p>
+      
+      <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+        <div class="quantity-pill" style="padding: 10px 24px; gap: 20px;">
+          <button class="qty-circle" id="qty-prompt-minus" style="font-size: 1.4rem; width: 32px; height: 32px;" onclick="adjustQtyPrompt(-1)">-</button>
+          <span style="font-weight: 800; font-size: 1.3rem; min-width: 30px;" id="qty-prompt-val">1</span>
+          <button class="qty-circle" id="qty-prompt-plus" style="font-size: 1.4rem; width: 32px; height: 32px;" onclick="adjustQtyPrompt(1)">+</button>
+        </div>
+      </div>
+
+      <button class="checkout-btn" id="qty-prompt-confirm-btn" style="padding: 14px;" onclick="confirmQtyPrompt()">
+        Adicionar ao Carrinho
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: MANAGE CATEGORIES -->
+  <div class="modal-backdrop" id="modal-categories">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3>Gerir Categorias</h3>
+        <button class="modal-close" onclick="closeModal('modal-categories')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      
+      <div class="form-group">
+        <label>Categorias Existentes</label>
+        <div id="manage-categories-list" style="max-height: 180px; overflow-y: auto; margin-bottom: 20px;">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <form id="form-category" onsubmit="saveCategory(event)">
+        <input type="hidden" id="category-id">
+        <div class="form-group">
+          <label for="category-name" id="label-category-form">Nova Categoria</label>
+          <input type="text" id="category-name" placeholder="Ex: Bebidas, Congelados..." required>
+        </div>
+        <div class="form-group">
+          <label for="category-emoji">Emoji</label>
+          <input type="text" id="category-emoji" placeholder="Ex: 🥤, 🍍, 🥩" required>
+        </div>
+        <div class="form-actions" style="display: flex; gap: 8px;">
+          <button type="button" class="btn-secondary" id="btn-cancel-cat-edit" style="display: none; padding: 12px;" onclick="cancelCategoryEdit()">Cancelar</button>
+          <button type="submit" class="checkout-btn" id="btn-submit-category" style="padding: 12px; flex-grow: 1;">Criar Categoria</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CUSTOM CONFIRM (Themed confirmation dialog) -->
+  <div class="modal-backdrop" id="modal-confirm">
+    <div class="modal-sheet" style="max-width: 380px; text-align: center; margin: auto;">
+      <div class="modal-header" style="margin-bottom: 16px;">
+        <h3 id="confirm-title">Confirmar Ação</h3>
+        <button class="modal-close" onclick="closeModal('modal-confirm')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <p style="font-size: 0.95rem; color: var(--color-text-main); margin-bottom: 24px; line-height: 1.5;" id="confirm-message">Tem a certeza que deseja realizar esta ação?</p>
+      
+      <div style="display: flex; gap: 12px;">
+        <button type="button" class="btn-secondary" style="flex: 1; padding: 12px;" onclick="closeModal('modal-confirm')">Cancelar</button>
+        <button type="button" class="checkout-btn" id="confirm-yes-btn" style="flex: 1; padding: 12px; box-shadow: none;">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (Compat versions for easy integration) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
