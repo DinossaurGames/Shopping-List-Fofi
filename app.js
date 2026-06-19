@@ -474,7 +474,7 @@ function renderItems() {
                 <p class="cart-row-subtitle">${item.category} • ${item.unit}</p>
                 ${item.description ? `<span class="cart-row-note" style="margin-bottom: 6px;">📝 ${item.description}</span>` : ''}
                 <div class="cart-row-note-container" onclick="event.stopPropagation()">
-                  <input type="text" class="cart-row-note-input" placeholder="+ Adicionar nota para esta compra..." value="${item.listNote || ''}" onchange="updateListNote('${item.id}', this.value)">
+                  <textarea class="cart-row-note-input" placeholder="+ Adicionar nota para esta compra..." rows="1" onchange="updateListNote('${item.id}', this.value)" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'">${item.listNote || ''}</textarea>
                 </div>
               </div>
               <div class="quantity-pill">
@@ -528,7 +528,7 @@ function renderItems() {
               <p class="cart-row-subtitle">${item.category} • ${item.unit}</p>
               ${item.description ? `<span class="cart-row-note" style="margin-bottom: 6px;">📝 ${item.description}</span>` : ''}
               <div class="cart-row-note-container" onclick="event.stopPropagation()">
-                <input type="text" class="cart-row-note-input" placeholder="+ Adicionar nota para esta compra..." value="${item.listNote || ''}" onchange="updateListNote('${item.id}', this.value)">
+                <textarea class="cart-row-note-input" placeholder="+ Adicionar nota para esta compra..." rows="1" onchange="updateListNote('${item.id}', this.value)" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'">${item.listNote || ''}</textarea>
               </div>
             </div>
             <div class="quantity-pill">
@@ -549,6 +549,12 @@ function renderItems() {
     }
 
     container.innerHTML = html;
+
+    // Auto-adjust height for all specific note textareas
+    document.querySelectorAll('.cart-row-note-input').forEach(textarea => {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    });
   }
   updateProgress();
 }

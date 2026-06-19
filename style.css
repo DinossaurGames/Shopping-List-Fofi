@@ -416,9 +416,10 @@ body {
 .cart-row-img {
   width: 60px;
   height: 60px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: var(--radius-md);
   background: #F1F5F9;
+  padding: 4px;
 }
 
 .cart-row-details {
@@ -925,6 +926,9 @@ body {
   outline: none;
   transition: var(--transition);
   box-sizing: border-box;
+  resize: none;
+  overflow: hidden;
+  display: block;
 }
 
 .cart-row-note-input:focus {
